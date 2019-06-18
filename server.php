@@ -2,6 +2,21 @@
 
 header( 'Content-Type: application/json' );
 
+$user = array_key_exists('PHP_AUTH_USER', $_SERVER) ? $_SERVER['PHP_AUTH_USER'] : '';
+$pwd = array_key_exists('PHP_AUTH_PW', $_SERVER) ? $_SERVER['PHP_AUTH_PW'] : '';
+
+if ( $user !== 'mauro' || $pwd !== '1234' ) {
+	header('Status-Code: 403');
+
+	echo json_encode(
+		[ 
+			'error' => "Usuario y/o password incorrectos", 
+		]
+	);
+
+	die;
+}
+
 $allowedResourceTypes = [
 	'books',
 	'authors',
