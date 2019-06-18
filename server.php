@@ -38,7 +38,7 @@ $books = [
 	],
 ];
 
-$resourceId = $_GET['resourceId'] ?? '';
+$resourceId = array_key_exists('resource_id', $_GET ) ? $_GET['resource_id'] : '';
 $method = $_SERVER['REQUEST_METHOD'];
 
 switch ( strtoupper( $method ) ) {
@@ -56,14 +56,26 @@ switch ( strtoupper( $method ) ) {
 		}
 
 		if ( !empty( $resourceId ) ) {
+			if ( array_key_exists( $resourceId, $books ) ) {
+				echo json_encode(
+					$books[ $resourceId ]
+				);
+			} else {
+				header( 'Status-Code: 404' );
 
+				echo json_encode(
+					[
+						'error' => 'Book '.$resourceId.' not found :(',
+					]
+				);
+			}
 		} else {
 			echo json_encode(
 				$books
 			);
-
-			die;
 		}
+
+		die;
 		
 		break;
 	case 'POST':
