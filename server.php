@@ -20,24 +20,63 @@ if ( !in_array( $resourceType, $allowedResourceTypes ) ) {
 	die;
 }
 
-switch ( strtoupper( $_SERVER['REQUEST_METHOD'] ) ) {
-	case 'GET':
+$books = [
+	1 => [
+		'titulo' => 'Lo que el viento se llevo',
+		'id_autor' => 2,
+		'id_genero' => 2,
+	],
+	2 => [
+		'titulo' => 'La Iliada',
+		'id_autor' => 1,
+		'id_genero' => 1,
+	],
+	3 => [
+		'titulo' => 'La Odisea',
+		'id_autor' => 1,
+		'id_genero' => 1,
+	],
+];
 
+$resourceId = $_GET['resourceId'] ?? '';
+$method = $_SERVER['REQUEST_METHOD'];
+
+switch ( strtoupper( $method ) ) {
+	case 'GET':
+		if ( "books" !== $resourceType ) {
+			header( 'Status-Code: 404' );
+
+			echo json_encode(
+				[
+					'error' => $resourceType.' not yet implemented :(',
+				]
+			);
+
+			die;
+		}
+
+		if ( !empty( $resourceId ) ) {
+
+		} else {
+			echo json_encode(
+				$books
+			);
+
+			die;
+		}
+		
 		break;
 	case 'POST':
-
-		break;
-
 	case 'PUT':
-
-		break;
-	
 	case 'DELETE':
+	default:
+		header( 'Status-Code: 404' );
+
+		echo json_encode(
+			[
+				'error' => $method.' not yet implemented :(',
+			]
+		);
 
 		break;
 }
-
-echo json_encode( [
-	'resource_type' => $resourceType,
-	'resource_id' => $_GET['resource_id'],
-] );
