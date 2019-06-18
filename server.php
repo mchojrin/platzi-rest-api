@@ -79,6 +79,12 @@ switch ( strtoupper( $method ) ) {
 		
 		break;
 	case 'POST':
+		$json = file_get_contents( 'php://input' );
+
+		$books[] = json_decode( $json );
+
+		echo array_keys($books)[count($books)-1];
+		break;
 	case 'PUT':
 	case 'DELETE':
 	default:
