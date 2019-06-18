@@ -2,6 +2,25 @@
 
 header( 'Content-Type: application/json' );
 
+if ( !array_key_exists( 'HTTP_X_TOKEN', $_SERVER ) ) {
+
+	die;
+}
+
+$url = 'http://'.$_SERVER['HTTP_HOST'].'/auth_server.php';
+
+$ch = curl_init( $url );
+curl_setopt( $ch, CURLOPT_HTTPHEADER, [
+	'X-Token' => $_SERVER['HTTP_X_TOKEN']
+]);
+curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+$ret = curl_exec( $ch );
+
+if ( $ret == 'false' ) {
+
+	die;
+}
+
 $allowedResourceTypes = [
 	'books',
 	'authors',

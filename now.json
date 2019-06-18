@@ -1,6 +1,7 @@
 {
 	"version": 2,
 	"routes": [ 
+		{ "src": "/auth(/)*", "dest": "auth_server.php" },
 		{ "src": "/(?<type>[^/]+)/(?<id>[^/]+)", "dest": "server.php?resource_type=$type&resource_id=$id" },
 		{ "src": "/(?<type>[^/]+)(/)*", "dest": "server.php?resource_type=$type" },
 		{ "src": "/(.*)", "dest": "server.php", "status": 404 }
