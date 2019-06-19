@@ -1,15 +1,14 @@
 {
 	"version": 2,
 	"routes": [ 
+		{ "src": "/", "dest": "index.html" },
 		{ "src": "/(?<type>[^/]+)/(?<id>[^/]+)", "dest": "server.php?resource_type=$type&resource_id=$id" },
 		{ "src": "/(?<type>[^/]+)(/)*", "dest": "server.php?resource_type=$type" },
 		{ "src": "/(.*)", "dest": "server.php", "status": 404 }
 	],
   "name": "platzi-rest-api",
   "builds": [
-	{ 
-		"src": "*.php", 
-		"use": "@now/php" 
-	}
+	{ "src": "*.php", "use": "@now/php" },
+	{ "src": "*.html", "use": "@now/static" }
   ]
 }
