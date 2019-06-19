@@ -18,19 +18,33 @@
         <div style="display: none;" id="messages">
             <p></p>
         </div>
+        <div style="display: none;" id="bookForm">
+            <label for="bookTitle">Titulo</label>
+            <input type="text" name="bookTitle" id="bookTitle">
+        </div>
     </body>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript">
     $('#loadBooks').click( function( ) {
         $('#messages').first('p').text('Cargando libros...');
         $('#messages').show();
         $.ajax( {
-            'url': window.location.href + '/books',
+            'url': window.location.href + (window.location.href.substr(window.location.href.length - 1) == '/' ? '' : '/' ) + 'books',
             'success' : function( data ) {
-                $('#messages').first('p').text('Recibido ' + data);
+                $('#messages').hide();
+                $('#booksTable > tbody').empty();
+                for ( b in data ) {
+                    addBook( data[b] );
+                }
             }
         } );
     });
+
+    function addBook( book )
+    {
+        $('#booksTable tr:last').after('<tr><td>' + book.titulo + '</td><td>' + book.id_autor + '</td><td>' + book.id_genero + '</td></tr>');
+    }
+
     </script>
 </html>
