@@ -19,8 +19,24 @@
             <p></p>
         </div>
         <div style="display: none;" id="bookForm">
-            <label for="bookTitle">Titulo</label>
-            <input type="text" name="bookTitle" id="bookTitle">
+            <hr/>
+            <table>
+                <tr>
+                    <td>Titulo:</td>
+                    <td><input type="text" name="bookTitle" id="bookTitle"></td>
+                </tr>
+                <tr>
+                    <td>ID Autor:</td>
+                    <td><input type="number" name="bookAuthorId" id="bookAuthorId" min="1"></td>
+                </tr>
+                <tr>
+                    <td>ID Genero:</td>
+                    <td><input type="number" name="bookGenreId" id="bookGenreId" min="1"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="button" value="Guardar" id="bookSave"/></td>
+                </tr>
+            </table>
         </div>
     </body>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
@@ -37,6 +53,7 @@
                 for ( b in data ) {
                     addBook( data[b] );
                 }
+                $('#bookForm').show();
             }
         } );
     });
@@ -46,5 +63,24 @@
         $('#booksTable tr:last').after('<tr><td>' + book.titulo + '</td><td>' + book.id_autor + '</td><td>' + book.id_genero + '</td></tr>');
     }
 
+    $('#bookSave').click( function( ) {
+        var newBook = {
+            titulo: $('#bookTitle').val(),
+            id_autor: $('#bookAuthorId').val(),
+            id_genero: $('#bookGenreId').val(),
+        }
+
+        $('#messages').first('p').text('Guardando libro...');
+        $('#messages').show();
+        $.ajax( {
+            'url': window.location.href + (window.location.href.substr(window.location.href.length - 1) == '/' ? '' : '/' ) + 'books',
+            'method': 'POST',
+            'data': JSON.stringify( newBook ),
+            'success' : function( data ) {
+                $('#messages').hide();
+                addBook( newBook );
+            }
+        } );
+    });
     </script>
 </html>
