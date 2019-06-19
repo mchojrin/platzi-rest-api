@@ -7,16 +7,21 @@ if ( !array_key_exists( 'HTTP_X_TOKEN', $_SERVER ) ) {
 	die;
 }
 
-$url = 'http://'.$_SERVER['HTTP_HOST'].'/auth_server.php';
+$url = 'https://'.$_SERVER['HTTP_HOST'].'/auth';
 
 $ch = curl_init( $url );
 curl_setopt( $ch, CURLOPT_HTTPHEADER, [
-	'X-Token' => $_SERVER['HTTP_X_TOKEN']
+	"X-Token: {$_SERVER['HTTP_X_TOKEN']}",
 ]);
 curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 $ret = curl_exec( $ch );
 
-if ( $ret == 'false' ) {
+if ( curl_errno($ch) != 0 ) {
+	die ( curl_error($ch) );
+}
+
+if ( $ret !== 'true' ) {
+	http_response_code( 403 );
 
 	die;
 }
@@ -29,7 +34,7 @@ $allowedResourceTypes = [
 
 $resourceType = $_GET['resource_type'];
 if ( !in_array( $resourceType, $allowedResourceTypes ) ) {
-	header( 'Status-Code: 400' );
+	http_response_code( 400 );
 	echo json_encode(
 		[
 			'error' => "$resourceType is un unkown",
@@ -63,7 +68,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 switch ( strtoupper( $method ) ) {
 	case 'GET':
 		if ( "books" !== $resourceType ) {
-			header( 'Status-Code: 404' );
+			http_response_code( 404 );
 
 			echo json_encode(
 				[
@@ -80,7 +85,7 @@ switch ( strtoupper( $method ) ) {
 					$books[ $resourceId ]
 				);
 			} else {
-				header( 'Status-Code: 404' );
+				http_response_code( 404 );
 
 				echo json_encode(
 					[
@@ -107,7 +112,7 @@ switch ( strtoupper( $method ) ) {
 	case 'PUT':
 	case 'DELETE':
 	default:
-		header( 'Status-Code: 404' );
+	http_response_code( 404 );
 
 		echo json_encode(
 			[
