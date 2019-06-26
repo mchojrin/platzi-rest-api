@@ -10,7 +10,7 @@ $allowedResourceTypes = [
 
 $resourceType = $_GET['resource_type'];
 if ( !in_array( $resourceType, $allowedResourceTypes ) ) {
-	header( 'Status-Code: 400' );
+	http_response_code( 400 );
 	echo json_encode(
 		[
 			'error' => "$resourceType is un unkown",
@@ -44,7 +44,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 switch ( strtoupper( $method ) ) {
 	case 'GET':
 		if ( "books" !== $resourceType ) {
-			header( 'Status-Code: 404' );
+			http_response_code( 404 );
 
 			echo json_encode(
 				[
@@ -61,7 +61,7 @@ switch ( strtoupper( $method ) ) {
 					$books[ $resourceId ]
 				);
 			} else {
-				header( 'Status-Code: 404' );
+				http_response_code( 404 );
 
 				echo json_encode(
 					[
@@ -100,7 +100,7 @@ switch ( strtoupper( $method ) ) {
 		}
 		break;
 	default:
-		header( 'Status-Code: 404' );
+		http_response_code( 404 );
 
 		echo json_encode(
 			[
