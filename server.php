@@ -45,7 +45,7 @@ if ( !in_array( $resourceType, $allowedResourceTypes ) ) {
 	header( 'Status-Code: 400' );
 	echo json_encode(
 		[
-			'error' => "$resourceType is un unkown",
+			'error' => "Resource type '$resourceType' is un unkown",
 		]
 	);
 	
