@@ -95,6 +95,9 @@ switch ( strtoupper( $method ) ) {
 		}
 		break;
 	case 'DELETE':
+		if ( !empty($resourceId) && array_key_exists( $resourceId, $books ) ) {
+			unset( $books[ $resourceId ] );
+		}
 		break;
 	default:
 		header( 'Status-Code: 404' );
