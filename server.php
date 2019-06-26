@@ -86,7 +86,19 @@ switch ( strtoupper( $method ) ) {
 		echo array_keys($books)[count($books)-1];
 		break;
 	case 'PUT':
+		if ( !empty($resourceId) && array_key_exists( $resourceId, $books ) ) {
+			$json = file_get_contents( 'php://input' );
+			
+			$books[ $resourceId ] = json_decode( $json, true );
+
+			echo $resourceId;
+		}
+		break;
 	case 'DELETE':
+		if ( !empty($resourceId) && array_key_exists( $resourceId, $books ) ) {
+			unset( $books[ $resourceId ] );
+		}
+		break;
 	default:
 		header( 'Status-Code: 404' );
 
